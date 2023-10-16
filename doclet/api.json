@@ -1,0 +1,131 @@
+{
+    "type":"null"
+,     "name":"root"
+,     "hash":"3506402"
+,     "children":[{
+    "type":"CLASS"
+,     "name":"PublicAPI"
+,     "hash":"-844110127"
+,     "children":[{
+    "type":"FIELD"
+,     "name":"field"
+,     "hash":"97427706"
+,     "children":[]
+}, {
+    "type":"CONSTRUCTOR"
+,     "name":"<init>"
+,     "hash":"1818100338"
+,     "children":[{
+    "type":"PARAMETER"
+,     "name":"field"
+,     "hash":"97427706"
+,     "children":[]
+}]
+}, {
+    "type":"CONSTRUCTOR"
+,     "name":"<init>"
+,     "hash":"1818100338"
+,     "children":[]
+}, {
+    "type":"METHOD"
+,     "name":"test"
+,     "hash":"3556498"
+,     "children":[]
+}, {
+    "type":"METHOD"
+,     "name":"test"
+,     "hash":"3556498"
+,     "children":[{
+    "type":"PARAMETER"
+,     "name":"test"
+,     "hash":"3556498"
+,     "children":[]
+}]
+}]
+}, {
+    "type":"RECORD"
+,     "name":"PublicRecord"
+,     "hash":"655699002"
+,     "children":[{
+    "type":"RECORD_COMPONENT"
+,     "name":"name"
+,     "hash":"3373707"
+,     "children":[]
+}, {
+    "type":"FIELD"
+,     "name":"name"
+,     "hash":"3373707"
+,     "children":[]
+}, {
+    "type":"CONSTRUCTOR"
+,     "name":"<init>"
+,     "hash":"1818100338"
+,     "children":[{
+    "type":"PARAMETER"
+,     "name":"name"
+,     "hash":"3373707"
+,     "children":[]
+}]
+}, {
+    "type":"METHOD"
+,     "name":"toString"
+,     "hash":"-1776922004"
+,     "children":[]
+}, {
+    "type":"METHOD"
+,     "name":"hashCode"
+,     "hash":"147696667"
+,     "children":[]
+}, {
+    "type":"METHOD"
+,     "name":"equals"
+,     "hash":"-1295482945"
+,     "children":[{
+    "type":"PARAMETER"
+,     "name":"o"
+,     "hash":"111"
+,     "children":[]
+}]
+}, {
+    "type":"METHOD"
+,     "name":"name"
+,     "hash":"3373707"
+,     "children":[]
+}]
+}, {
+    "type":"CLASS"
+,     "name":"PublicAPI"
+,     "hash":"-844110127"
+,     "children":[{
+    "type":"FIELD"
+,     "name":"field"
+,     "hash":"97427706"
+,     "children":[]
+}, {
+    "type":"CONSTRUCTOR"
+,     "name":"<init>"
+,     "hash":"1818100338"
+,     "children":[{
+    "type":"PARAMETER"
+,     "name":"field"
+,     "hash":"97427706"
+,     "children":[]
+}]
+}, {
+    "type":"CONSTRUCTOR"
+,     "name":"<init>"
+,     "hash":"1818100338"
+,     "children":[]
+}, {
+    "type":"METHOD"
+,     "name":"test"
+,     "hash":"3556498"
+,     "children":[{
+    "type":"PARAMETER"
+,     "name":"test"
+,     "hash":"3556498"
+,     "children":[]
+}]
+}]
+}]
+}
