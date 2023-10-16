@@ -5,11 +5,12 @@ import jdk.javadoc.doclet.DocletEnvironment;
 import jdk.javadoc.doclet.Reporter;
 
 import javax.lang.model.SourceVersion;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class UniversalDoclet implements Doclet {
     @Override
@@ -37,14 +38,24 @@ public class UniversalDoclet implements Doclet {
 
         // new PrintStream(new FileOutputStream("response.txt"))
 
-        Exposed exposed = new UniversalScanner().collect(environment.getSpecifiedElements());
-        try (PrintWriter target = new PrintWriter("api.json", StandardCharsets.UTF_8)) {
-            target.println(exposed);
-            target.flush();
-        } catch (IOException e) {
+        ExposedDeser exposed = toDeser(new UniversalScanner().collect(environment.getSpecifiedElements()));
+
+
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("specV2"))) {
+
+            System.out.println("exposed = " + exposed);
+
+            out.writeObject(exposed);
+            out.flush();
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         return true;
+    }
+
+    private static ExposedDeser toDeser(Exposed exposed) {
+        return new ExposedDeser(exposed.absolutePath(), exposed.name(), exposed.type(), exposed.children().stream().map(UniversalDoclet::toDeser).collect(Collectors.toList()));
     }
 }

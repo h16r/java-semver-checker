@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>doclet</module>
+        <module>checker</module>
     </modules>
 
     <dependencies>

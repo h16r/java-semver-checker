@@ -12,75 +12,52 @@ public class UniversalScanner extends ElementScanner14<Exposed, Exposed> {
 
     @Override
     public Exposed visitType(TypeElement e, Exposed parent) {
-
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        parent.addChild(child);
-
-        return super.visitType(e, child);
+        return super.visitType(e, new Exposed(parent, e.getSimpleName().toString(), e.getKind().name()));
     }
 
     @Override
     public Exposed visitRecordComponent(RecordComponentElement e, Exposed exposed) {
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        exposed.addChild(child);
-
-        return super.visitRecordComponent(e, exposed);
+        return super.visitRecordComponent(e, new Exposed(exposed, e.getSimpleName().toString(), e.getKind().name()));
     }
 
     @Override
     public Exposed visitModule(ModuleElement e, Exposed exposed) {
-
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        exposed.addChild(child);
-
-        return super.visitModule(e, exposed);
+        return super.visitModule(e, new Exposed(exposed, e.getSimpleName().toString(), e.getKind().name()));
     }
 
     @Override
     public Exposed visitVariable(VariableElement e, Exposed exposed) {
-
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        exposed.addChild(child);
-
-        return super.visitVariable(e, exposed);
+        return super.visitVariable(e, new Exposed(exposed, e.getSimpleName().toString(), e.getKind().name()));
     }
 
     @Override
     public Exposed visitPackage(PackageElement e, Exposed exposed) {
-        System.out.println("e = " + e);
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        exposed.addChild(child);
-
-        return super.visitPackage(e, exposed);
+        return super.visitPackage(e, new Exposed(exposed, e.getSimpleName().toString(), e.getKind().name()));
     }
 
     @Override
     public Exposed visitTypeParameter(TypeParameterElement e, Exposed exposed) {
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        exposed.addChild(child);
-
-        return super.visitTypeParameter(e, exposed);
+        return super.visitTypeParameter(e, new Exposed(exposed, e.getSimpleName().toString(), e.getKind().name()));
     }
 
     @Override
     public Exposed visitUnknown(Element e, Exposed exposed) {
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        exposed.addChild(child);
 
-        return super.visitUnknown(e, exposed);
+        Exposed child = new Exposed(exposed, e.getSimpleName().toString(), e.getKind().name());
+
+        return super.visitUnknown(e, child);
     }
 
     @Override
     public Exposed visitExecutable(ExecutableElement e, Exposed parent) {
 
-        Exposed child = new Exposed(e.getSimpleName().toString(), e.getKind().name());
-        parent.addChild(child);
+        Exposed child = new Exposed(parent, e.getSimpleName().toString(), e.getKind().name());
 
         return super.visitExecutable(e, child);
     }
 
     public Exposed collect(Set<? extends Element> elements) {
-        Exposed exposed = new Exposed("root");
+        Exposed exposed = new Exposed();
         super.scan(elements, exposed);
 
         return exposed;

@@ -1,34 +1,40 @@
 package at.leonk;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public record Exposed (String type, String name, int hash, List<Exposed> children) {
+//FIXME: add parent
+public record Exposed (Exposed parent, String type, String name, int hash, List<Exposed> children) implements Serializable {
 
     Exposed() {
-        this(null, "root", "root".hashCode(), new ArrayList<>());
+        this(null, null, "root", "root".hashCode(), new ArrayList<>());
     }
 
-    Exposed(String name){
-        this(null, name, name.hashCode(), new ArrayList<>());
+    Exposed(Exposed parent, String name, String type){
+        this(parent, type, name, name.hashCode(), new ArrayList<>());
+        parent.children.add(this);
     }
 
-    Exposed(String name, String type){
-        this(type, name, name.hashCode(), new ArrayList<>());
-    }
+    String absolutePath() {
 
-    Exposed addChild(Exposed exposed) {
-        children.add(exposed);
-        return this;
+        String path = Optional.ofNullable(parent)
+                .map(parent -> parent.absolutePath() + ":")
+                .orElse("");
+
+        return path + name;
+
     }
 
     @Override
     public String toString() {
-        return "{\n"
-                + "    \"type\":" + "\""  + type + "\"\n"
-                + ",     \"name\":\"" + name + "\"\n"
-                + ",     \"hash\":\"" + hash + "\"\n"
-                + ",     \"children\":" + children + "\n"
+        return "{"
+                + "\"parent\":" + "\"" + Optional.ofNullable(parent).map(Exposed::name).orElse("null") + "\","
+                + "\"type\":" + "\""  + type + "\""
+                + ",\"name\":\"" + name + "\""
+                + ",\"hash\":\"" + hash + "\""
+                + ",\"children\":" + children
                 + "}";
     }
 }
