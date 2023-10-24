@@ -1,23 +1,30 @@
 package at.leonk;
 
-import java.io.*;
-import java.util.Optional;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 public class Main {
     public static void main(String[] args) {
 
-        ExposedDeser first = load("specV1");
-        System.out.println("first = " + first);
-        ExposedDeser second = load("specV2");
-        //System.out.println("second = " + second);
+        if (args.length < 2) {
+            // checker/src/main/resources/
+            System.err.println("usage of checker: java -jar <specV1> <specV2>");
+        }
 
-        System.out.println("Checker.check(second, first) = " + Checker.check(first, second));
-
-
+        check(args[0], args[1]);
     }
 
+    static Report check(String firstSpec, String secondSpec) {
+
+        ExposedDeser first = load(firstSpec);
+        ExposedDeser second = load(secondSpec);
+
+        return Checker.check(first, second);
+    }
+
+
     private static ExposedDeser load(String fileName) {
-        try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream("checker/src/main/resources/" + fileName))) {
+        try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(fileName))) {
             return (ExposedDeser) fileInputStream.readObject();
         } catch (Exception e) {
             throw new RuntimeException(e);

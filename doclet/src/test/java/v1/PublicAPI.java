@@ -15,6 +15,10 @@ public class PublicAPI {
     public void test() {
     }
 
+    public int testWithParameters(int abc) {
+        return 10 * abc;
+    }
+
     public void test(String test) {
 
     }

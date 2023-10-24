@@ -12,17 +12,17 @@ public class Checker {
 
     static Report compare(ExposedDeser from, ExposedDeser to) {
 
-        List<Report.Diff> diffs = new ArrayList<>();
+        List<Diff> diffs = new ArrayList<>();
         boolean isBreaking = false;
 
         if (!from.name().equals(to.name())) {
             isBreaking = true;
-            diffs.add(new Report.Diff(from.path(), "name changed from %s to %s".formatted(from.name(), to.name())));
+            diffs.add(new Diff(from.path(), "name changed from %s to %s".formatted(from.name(), to.name()), Diff.Type.UNKNOWN, Diff.Criticality.WARNING));
         }
 
         if ((from.type() != null && to.type() != null) && !from.type().equals(to.type())) {
             isBreaking = true;
-            diffs.add(new Report.Diff(from.path(), "type changed from %s to %s".formatted(from.name(), to.name())));
+            diffs.add(new Diff(from.path(), "type changed from %s to %s".formatted(from.name(), to.name()), Diff.Type.UNKNOWN, Diff.Criticality.WARNING));
         }
 
         for (int i = 0; i < from.children().size(); i++) {
@@ -37,7 +37,13 @@ public class Checker {
 
             } else {
 
-                diffs.add(new Report.Diff(current.path(), "%s \"%s\" removed".formatted(current.type().toLowerCase(), current.name())));
+
+                if (current.name().equals("testWithParameters")) {
+                    current.children().forEach(System.out::println);
+                }
+
+
+                diffs.add(Diff.Removed(current.path(), current.type(), current.name()));
                 isBreaking = true;
 
             }

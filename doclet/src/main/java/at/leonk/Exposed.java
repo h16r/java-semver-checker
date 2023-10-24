@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//FIXME: add parent
 public record Exposed (Exposed parent, String type, String name, int hash, List<Exposed> children) implements Serializable {
 
     Exposed() {
