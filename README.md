@@ -9,3 +9,5 @@ generate spec
 ```
 javadoc -docletpath target/classes -doclet at.leonk.UniversalDoclet src/test/java/v1/**
 ```
+
+Todo: Replace List with Map; Signature as identifier
