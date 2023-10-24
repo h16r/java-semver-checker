@@ -11,3 +11,5 @@ javadoc -docletpath target/classes -doclet at.leonk.UniversalDoclet src/test/jav
 ```
 
 Todo: Replace List with Map; Signature as identifier
+
+Signature=Object (Int==Long eg)
