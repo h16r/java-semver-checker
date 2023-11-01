@@ -1,4 +1,4 @@
-package at.leonk;
+package at.leonk.semverchecker;
 
 import javax.tools.ToolProvider;
 import java.io.IOException;

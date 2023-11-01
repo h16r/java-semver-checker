@@ -1,4 +1,4 @@
-package at.leonk;
+package at.leonk.semverchecker;
 
 import org.junit.jupiter.api.Test;
 

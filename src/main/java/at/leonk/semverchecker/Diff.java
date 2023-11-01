@@ -1,4 +1,4 @@
-package at.leonk;
+package at.leonk.semverchecker;
 
 public record Diff(String sourcePath, String message, Type type, Criticality criticality) {
 

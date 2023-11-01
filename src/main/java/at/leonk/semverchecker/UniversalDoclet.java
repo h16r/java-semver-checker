@@ -1,4 +1,4 @@
-package at.leonk;
+package at.leonk.semverchecker;
 
 import jdk.javadoc.doclet.Doclet;
 import jdk.javadoc.doclet.DocletEnvironment;

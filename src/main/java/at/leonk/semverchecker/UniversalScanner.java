@@ -1,4 +1,4 @@
-package at.leonk;
+package at.leonk.semverchecker;
 
 import javax.lang.model.element.*;
 import javax.lang.model.util.ElementScanner14;

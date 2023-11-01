@@ -1,4 +1,4 @@
-package at.leonk;
+package at.leonk.semverchecker;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;

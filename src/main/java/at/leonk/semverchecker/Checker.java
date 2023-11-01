@@ -1,4 +1,4 @@
-package at.leonk;
+package at.leonk.semverchecker;
 
 import java.util.ArrayList;
 import java.util.List;
