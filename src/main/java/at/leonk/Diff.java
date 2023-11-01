@@ -1,7 +1,5 @@
 package at.leonk;
 
-import java.lang.reflect.Type;
-
 public record Diff(String sourcePath, String message, Type type, Criticality criticality) {
 
     public static Diff Removed(String sourcePath, String sourceType, String sourceName) {

@@ -5,17 +5,17 @@
     <artifactId>parent</artifactId>
     <version>0.1.0</version>
 
-    <packaging>pom</packaging>
-    <modules>
-        <module>doclet</module>
-        <module>checker</module>
-    </modules>
-
     <dependencies>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20231013</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

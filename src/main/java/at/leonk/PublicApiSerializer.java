@@ -11,7 +11,7 @@ public class PublicApiSerializer {
         var documentationTool = ToolProvider.getSystemDocumentationTool();
         var fileManager = documentationTool.getStandardFileManager(null, null, null);
         var compilationUnits = fileManager.getJavaFileObjects(Files.find(
-                Path.of("doclet/src/test/java/v1"),
+                Path.of("src/test/java/v1"),
                 Integer.MAX_VALUE,
                 (path, basicFileAttributes) -> path.getFileName().toString().endsWith(".java"),
                 FileVisitOption.FOLLOW_LINKS).toArray(Path[]::new));
