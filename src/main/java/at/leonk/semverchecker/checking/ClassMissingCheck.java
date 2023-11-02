@@ -9,9 +9,9 @@ import java.util.stream.Stream;
 
 public class ClassMissingCheck implements SemverCheck {
     @Override
-    public Stream<Diff> check(Set<Element> baselineElements, Set<Element> curretElements) {
+    public Stream<Diff> check(Set<Element> baselineElements, Set<Element> currentElements) {
         return publicClasses(baselineElements)
-                .filter(baselineElement -> publicClasses(curretElements).noneMatch(curretElement -> curretElement.getQualifiedName().equals(baselineElement.getQualifiedName())))
+                .filter(baselineElement -> publicClasses(currentElements).noneMatch(currentElement -> currentElement.getQualifiedName().equals(baselineElement.getQualifiedName())))
                 .map(missingElement -> Diff.Removed(missingElement.getQualifiedName().toString(), "class", missingElement.getQualifiedName().toString()));
     }
 

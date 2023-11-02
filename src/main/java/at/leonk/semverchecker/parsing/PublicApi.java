@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public record PublicApi(
         Set<Element> baselineElements,
-        Set<Element> curretElements
+        Set<Element> currentElements
 ) {
     @Override
     public String toString() {
@@ -16,7 +16,7 @@ public record PublicApi(
                 """
                 .formatted(
                         baselineElements.stream().map(Object::toString).collect(Collectors.joining()),
-                        curretElements.stream().map(Object::toString).collect(Collectors.joining())
+                        currentElements.stream().map(Object::toString).collect(Collectors.joining())
                 );
     }
 }

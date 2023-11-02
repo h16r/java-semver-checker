@@ -13,7 +13,7 @@ public class Checker {
 
         var allChecks = Stream.of(new ClassMissingCheck());
         return Report.of(allChecks
-                .flatMap(checker -> checker.check(publicApi.baselineElements(), publicApi.curretElements()))
+                .flatMap(checker -> checker.check(publicApi.baselineElements(), publicApi.currentElements()))
                 .toList());
     }
 }

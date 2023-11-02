@@ -14,18 +14,18 @@ import java.util.HashSet;
 public class PublicApiParser {
     private static final DocumentationTool documentationTool = ToolProvider.getSystemDocumentationTool();
 
-    public static PublicApi parse(Path baselineApiPath, Path curretApiPath) throws IOException {
+    public static PublicApi parse(Path baselineApiPath, Path currentApiPath) throws IOException {
         var baselineCompilationUnits = getCompilationUnits(baselineApiPath);
         var baselineElements = new HashSet<Element>();
         OldApiParserDoclet.baselineApiConsumer = baselineElements::addAll;
         parseApi(OldApiParserDoclet.class, baselineCompilationUnits);
 
-        var curretCompilationUnits = getCompilationUnits(curretApiPath);
-        var curretElements = new HashSet<Element>();
-        NewApiParserDoclet.currentApiConsumer = curretElements::addAll;
-        parseApi(NewApiParserDoclet.class, curretCompilationUnits);
+        var currentCompilationUnits = getCompilationUnits(currentApiPath);
+        var currentElements = new HashSet<Element>();
+        NewApiParserDoclet.currentApiConsumer = currentElements::addAll;
+        parseApi(NewApiParserDoclet.class, currentCompilationUnits);
 
-        return new PublicApi(baselineElements, curretElements);
+        return new PublicApi(baselineElements, currentElements);
     }
 
     private static void parseApi(Class<? extends ApiParserDoclet> docletClass, Iterable<? extends JavaFileObject> compilationUnits) {
