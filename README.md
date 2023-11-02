@@ -1,6 +1,6 @@
 # java-semver-checker
 
-Check your library for [Semver](https://semver.org/ violations before releasing updates.
+Check your library for [Semver](https://semver.org/) violations before releasing updates.
 
 Heavily inspired by Rust's [cargo-semver-checks](https://github.com/obi1kenobi/cargo-semver-checks).
 
