@@ -8,12 +8,12 @@ import java.util.stream.Stream;
 
 public class Checker {
 
-    public static Report check(Path oldApiPath, Path newApiPath) throws IOException {
-        var publicApi = PublicApiParser.parse(oldApiPath, newApiPath);
+    public static Report check(Path baselineApiPath, Path currentApiPath) throws IOException {
+        var publicApi = PublicApiParser.parse(baselineApiPath, currentApiPath);
 
         var allChecks = Stream.of(new ClassMissingCheck());
         return Report.of(allChecks
-                .flatMap(checker -> checker.check(publicApi.oldElements(), publicApi.newElements()))
+                .flatMap(checker -> checker.check(publicApi.baselineElements(), publicApi.curretElements()))
                 .toList());
     }
 }

@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CheckerTest {
     @ParameterizedTest
     @MethodSource("getTestProjects")
-    void testAllRules(Path oldProject, Path newProject) throws IOException {
-        var report = Checker.check(oldProject, newProject);
+    void testAllRules(Path baselineProject, Path curretProject) throws IOException {
+        var report = Checker.check(baselineProject, curretProject);
         assertTrue(report.breaking());
     }
 
@@ -25,8 +25,8 @@ class CheckerTest {
         var testProjectsRoot = CheckerTest.class.getResource("/test-projects");
         return Files.find(Path.of(testProjectsRoot.toURI()), 1, (path, attrs) -> attrs.isDirectory() && !path.endsWith("test-projects"))
                 .map(testProject -> Arguments.of(
-                        testProject.resolve("old"),
-                        testProject.resolve("new")
+                        testProject.resolve("baseline"),
+                        testProject.resolve("curret")
                 ));
     }
 }

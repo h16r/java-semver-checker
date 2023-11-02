@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public record PublicApi(
-        Set<Element> oldElements,
-        Set<Element> newElements
+        Set<Element> baselineElements,
+        Set<Element> curretElements
 ) {
     @Override
     public String toString() {
@@ -15,8 +15,8 @@ public record PublicApi(
                 New elements: %s
                 """
                 .formatted(
-                        oldElements.stream().map(Object::toString).collect(Collectors.joining()),
-                        newElements.stream().map(Object::toString).collect(Collectors.joining())
+                        baselineElements.stream().map(Object::toString).collect(Collectors.joining()),
+                        curretElements.stream().map(Object::toString).collect(Collectors.joining())
                 );
     }
 }

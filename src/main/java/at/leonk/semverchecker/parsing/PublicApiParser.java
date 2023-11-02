@@ -14,18 +14,18 @@ import java.util.HashSet;
 public class PublicApiParser {
     private static final DocumentationTool documentationTool = ToolProvider.getSystemDocumentationTool();
 
-    public static PublicApi parse(Path oldApiPath, Path newApiPath) throws IOException {
-        var oldCompilationUnits = getCompilationUnits(oldApiPath);
-        var oldElements = new HashSet<Element>();
-        OldApiParserDoclet.oldApiConsumer = oldElements::addAll;
-        parseApi(OldApiParserDoclet.class, oldCompilationUnits);
+    public static PublicApi parse(Path baselineApiPath, Path curretApiPath) throws IOException {
+        var baselineCompilationUnits = getCompilationUnits(baselineApiPath);
+        var baselineElements = new HashSet<Element>();
+        OldApiParserDoclet.baselineApiConsumer = baselineElements::addAll;
+        parseApi(OldApiParserDoclet.class, baselineCompilationUnits);
 
-        var newCompilationUnits = getCompilationUnits(newApiPath);
-        var newElements = new HashSet<Element>();
-        NewApiParserDoclet.newApiConsumer = newElements::addAll;
-        parseApi(NewApiParserDoclet.class, newCompilationUnits);
+        var curretCompilationUnits = getCompilationUnits(curretApiPath);
+        var curretElements = new HashSet<Element>();
+        NewApiParserDoclet.currentApiConsumer = curretElements::addAll;
+        parseApi(NewApiParserDoclet.class, curretCompilationUnits);
 
-        return new PublicApi(oldElements, newElements);
+        return new PublicApi(baselineElements, curretElements);
     }
 
     private static void parseApi(Class<? extends ApiParserDoclet> docletClass, Iterable<? extends JavaFileObject> compilationUnits) {

@@ -5,5 +5,5 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public interface SemverCheck {
-    Stream<Diff> check(Set<Element> oldElements, Set<Element> newElements);
+    Stream<Diff> check(Set<Element> baselineElements, Set<Element> curretElements);
 }
