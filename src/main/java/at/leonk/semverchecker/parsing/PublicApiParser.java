@@ -1,5 +1,7 @@
 package at.leonk.semverchecker.parsing;
 
+import at.leonk.semverchecker.checking.ElementPredicates;
+
 import javax.lang.model.element.Element;
 import javax.tools.DocumentationTool;
 import javax.tools.JavaFileObject;
@@ -9,23 +11,26 @@ import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class PublicApiParser {
     private static final DocumentationTool documentationTool = ToolProvider.getSystemDocumentationTool();
 
     public static PublicApi parse(Path baselineApiPath, Path currentApiPath) throws IOException {
         var baselineCompilationUnits = getCompilationUnits(baselineApiPath);
-        var baselineElements = new HashSet<Element>();
+        var baselineElements = new ArrayList<Element>();
         OldApiParserDoclet.baselineApiConsumer = baselineElements::addAll;
         parseApi(OldApiParserDoclet.class, baselineCompilationUnits);
 
         var currentCompilationUnits = getCompilationUnits(currentApiPath);
-        var currentElements = new HashSet<Element>();
+        var currentElements = new ArrayList<Element>();
         NewApiParserDoclet.currentApiConsumer = currentElements::addAll;
         parseApi(NewApiParserDoclet.class, currentCompilationUnits);
 
-        return new PublicApi(baselineElements, currentElements);
+        return new PublicApi(
+                baselineElements.stream().filter(ElementPredicates::isPublic).toList(),
+                currentElements.stream().filter(ElementPredicates::isPublic).toList()
+        );
     }
 
     private static void parseApi(Class<? extends ApiParserDoclet> docletClass, Iterable<? extends JavaFileObject> compilationUnits) {

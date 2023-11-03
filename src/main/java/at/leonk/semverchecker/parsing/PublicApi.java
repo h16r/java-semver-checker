@@ -1,12 +1,12 @@
 package at.leonk.semverchecker.parsing;
 
 import javax.lang.model.element.Element;
-import java.util.Set;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 public record PublicApi(
-        Set<Element> baselineElements,
-        Set<Element> currentElements
+        Collection<Element> baselineElements,
+        Collection<Element> currentElements
 ) {
     @Override
     public String toString() {

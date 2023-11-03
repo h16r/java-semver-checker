@@ -2,12 +2,12 @@ package at.leonk.semverchecker.checking;
 
 import java.util.List;
 
-public record Report(boolean breaking, List<Diff> differences) {
+public record Report(boolean breaking, List<Violation> differences) {
 
-    public static Report of(List<Diff> diffs) {
+    public static Report of(List<Violation> violations) {
         return new Report(
-                diffs.stream().anyMatch(diff -> diff.criticality() == Diff.Criticality.BREAKING),
-                diffs
+                violations.stream().anyMatch(diff -> diff.criticality() == Violation.Criticality.BREAKING),
+                violations
         );
     }
 }
