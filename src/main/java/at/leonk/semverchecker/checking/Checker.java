@@ -23,8 +23,8 @@ public class Checker {
                 new EnumMissingCheck()
         );
 
-        return Report.of(allChecks
-                .flatMap(checker -> checker.check(publicApi.baselineElements(), publicApi.currentElements()))
+        return new Report(allChecks
+                .flatMap(checker -> checker.checkForViolations(publicApi.baselineElements(), publicApi.currentElements()).stream())
                 .toList());
     }
 }

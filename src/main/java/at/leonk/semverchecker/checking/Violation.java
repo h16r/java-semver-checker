@@ -1,21 +1,12 @@
 package at.leonk.semverchecker.checking;
 
-public record Violation(String sourcePath, String message, Type type, Criticality criticality) {
 
-    public static Violation Removed(String sourcePath, String sourceType, String sourceName) {
-        return new Violation(sourcePath, "%s \"%s\" removed".formatted(sourceType.toLowerCase(), sourceName), Type.REMOVED, Criticality.BREAKING);
-    }
+import java.util.Collection;
 
-    enum Criticality {
-        BREAKING,
-        WARNING,
-        INFO
-    }
-
-    enum Type {
-        UNKNOWN,
-        REMOVED,
-        RENAMED,
-    }
-
+public record Violation(
+        String code,
+        String description,
+        String docUrl,
+        Collection<ViolatingLocation> locations
+) {
 }
