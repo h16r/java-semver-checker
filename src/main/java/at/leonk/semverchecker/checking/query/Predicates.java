@@ -4,7 +4,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.QualifiedNameable;
 import java.util.function.Predicate;
 
-public class Predicates {
+public final class Predicates {
     public static Predicate<QualifiedNameable> matchesQualifiedNameOf(QualifiedNameable element) {
         return el -> el.getQualifiedName().contentEquals(element.getQualifiedName());
     }

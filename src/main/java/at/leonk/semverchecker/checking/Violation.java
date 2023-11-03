@@ -1,12 +1,12 @@
 package at.leonk.semverchecker.checking;
 
 
-import java.util.Collection;
+import java.util.List;
 
 public record Violation(
         String code,
         String description,
         String docUrl,
-        Collection<ViolatingLocation> locations
+        List<ViolatingLocation> locations
 ) {
 }

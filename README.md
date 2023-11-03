@@ -15,6 +15,8 @@ compile using the new version.
 
 Below is a list of all rules along with their required version increment.
 
+[//]: # (WARNING: Whenever renaming these section titles, check the rule implementations so that no links are broken.)
+
 ### Major: renaming/moving/removing any public elements
 
 ```java
