@@ -1,6 +1,7 @@
 package at.leonk.semverchecker;
 
 import at.leonk.semverchecker.checking.Checker;
+import at.leonk.semverchecker.checking.Report;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,15 +12,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CheckerTest {
     @ParameterizedTest
     @MethodSource("getTestProjects")
     void testAllRules(Path baselineProject, Path currentProject) throws IOException {
+        // No changes when checking against itself, so report should be non-breaking.
+        var nonBreakingReport = Checker.check(baselineProject, baselineProject);
+        assertNonBreaking(nonBreakingReport);
+
         var report = Checker.check(baselineProject, currentProject);
-        System.out.println("report.differences() = " + report.differences());
-        assertTrue(report.breaking());
+        assertBreaking(report);
+    }
+
+    private static void assertBreaking(Report report) {
+        assertTrue(report.breaking(), "Expected report to be breaking, but was non-breaking: %s".formatted(report));
+    }
+
+    private static void assertNonBreaking(Report report) {
+        assertFalse(report.breaking(), "Expected report to be non-breaking, but found differences: %s".formatted(report));
     }
 
     public static Stream<Arguments> getTestProjects() throws URISyntaxException, IOException {

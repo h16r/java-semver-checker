@@ -17,7 +17,7 @@ public class RecordMissingCheck implements SemverCheck {
                 publicRecords(currentElements)
                         .noneMatch(currentElement -> currentElement
                                 .getQualifiedName()
-                                .equals(baseline.getQualifiedName()));
+                                .contentEquals(baseline.getQualifiedName()));
 
         return publicRecords(baselineElements).filter(presentInCurrentElements).map(missingElement -> Violation.Removed(missingElement.getQualifiedName().toString(), "record", missingElement.getQualifiedName().toString()));
     }

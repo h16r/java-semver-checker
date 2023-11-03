@@ -13,7 +13,7 @@ public class ClassMissingCheck implements SemverCheck {
     @Override
     public Stream<Violation> check(Collection<Element> baselineElements, Collection<Element> currentElements) {
         return publicClasses(baselineElements)
-                .filter(baselineElement -> publicClasses(currentElements).noneMatch(currentElement -> currentElement.getQualifiedName().equals(baselineElement.getQualifiedName())))
+                .filter(baselineElement -> publicClasses(currentElements).noneMatch(currentElement -> currentElement.getQualifiedName().contentEquals(baselineElement.getQualifiedName())))
                 .map(missingElement -> Violation.Removed(missingElement.getQualifiedName().toString(), "class", missingElement.getQualifiedName().toString()));
     }
 
