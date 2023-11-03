@@ -2,7 +2,8 @@
 
 Check your library for [Semver](https://semver.org/) violations before releasing updates.
 
-Heavily inspired by Rust's [cargo-semver-checks](https://github.com/obi1kenobi/cargo-semver-checks) and the [cargo book](https://doc.rust-lang.org/cargo/reference/semver.html#item-remove).
+Heavily inspired by Rust's [cargo-semver-checks](https://github.com/obi1kenobi/cargo-semver-checks) and
+the [cargo book](https://doc.rust-lang.org/cargo/reference/semver.html#item-remove).
 
 ## Rules
 
@@ -64,13 +65,15 @@ public class Foo {
 ///////////////////////////////////////////////////////////
 // Before
 public class Library {
-    public void foo() {}
+    public void foo() {
+    }
 }
 
 ///////////////////////////////////////////////////////////
 // After
 public class Library {
-    public void foo(String parameter) {}
+    public void foo(String parameter) {
+    }
 }
 
 ///////////////////////////////////////////////////////////
@@ -83,6 +86,10 @@ public class Downstream {
 ```
 
 ### Major: adding new enum values
+
+Historically adding new enum values was a non-breaking operation because `switch` statements did not have to be
+exhaustive, meaning not all values had to be matched. The newer `switch` _expressions_, however, have to be exhaustive,
+which means if a new enum value is added then existing switch expressions stop to compile.
 
 ```java
 // MAJOR CHANGE
