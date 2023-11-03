@@ -1,7 +1,5 @@
 package at.leonk.semverchecker.parsing;
 
-import at.leonk.semverchecker.checking.ElementPredicates;
-
 import javax.lang.model.element.Element;
 import javax.tools.DocumentationTool;
 import javax.tools.JavaFileObject;
@@ -27,10 +25,7 @@ public class PublicApiParser {
         NewApiParserDoclet.currentApiConsumer = currentElements::addAll;
         parseApi(NewApiParserDoclet.class, currentCompilationUnits);
 
-        return new PublicApi(
-                baselineElements.stream().filter(ElementPredicates::isPublic).toList(),
-                currentElements.stream().filter(ElementPredicates::isPublic).toList()
-        );
+        return new PublicApi(baselineElements, currentElements);
     }
 
     private static void parseApi(Class<? extends ApiParserDoclet> docletClass, Iterable<? extends JavaFileObject> compilationUnits) {
