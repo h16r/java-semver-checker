@@ -1,6 +1,7 @@
 package at.leonk.semverchecker.checking;
 
 import at.leonk.semverchecker.checking.rules.ClassMissingCheck;
+import at.leonk.semverchecker.checking.rules.EnumMissingCheck;
 import at.leonk.semverchecker.checking.rules.EnumValueAddedCheck;
 import at.leonk.semverchecker.checking.rules.RecordMissingCheck;
 import at.leonk.semverchecker.parsing.PublicApiParser;
@@ -15,7 +16,12 @@ public class Checker {
 
         var publicApi = PublicApiParser.parse(baselineApiPath, currentApiPath);
 
-        var allChecks = Stream.of(new ClassMissingCheck(), new RecordMissingCheck(), new EnumValueAddedCheck());
+        var allChecks = Stream.of(
+                new ClassMissingCheck(),
+                new RecordMissingCheck(),
+                new EnumValueAddedCheck(),
+                new EnumMissingCheck()
+        );
 
         return Report.of(allChecks
                 .flatMap(checker -> checker.check(publicApi.baselineElements(), publicApi.currentElements()))

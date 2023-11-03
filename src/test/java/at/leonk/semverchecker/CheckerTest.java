@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CheckerTest {
-    @ParameterizedTest
+    @ParameterizedTest(name = "{index} {2}")
     @MethodSource("getTestProjects")
-    void testAllRules(Path baselineProject, Path currentProject) throws IOException {
+    void testAllRules(Path baselineProject, Path currentProject, @SuppressWarnings("unused") String testDisplayName) throws IOException {
         // No changes when checking against itself, so report should be non-breaking.
         var nonBreakingReport = Checker.check(baselineProject, baselineProject);
         assertNonBreaking(nonBreakingReport);
@@ -40,7 +40,8 @@ class CheckerTest {
         return Files.find(Path.of(testProjectsRoot.toURI()), 1, (path, attrs) -> attrs.isDirectory() && !path.endsWith("test-projects"))
                 .map(testProject -> Arguments.of(
                         testProject.resolve("baseline"),
-                        testProject.resolve("current")
+                        testProject.resolve("current"),
+                        testProject.getFileName().toString()
                 ));
     }
 }
