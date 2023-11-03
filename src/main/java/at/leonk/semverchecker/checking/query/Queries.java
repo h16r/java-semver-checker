@@ -1,16 +1,17 @@
-package at.leonk.semverchecker.checking;
+package at.leonk.semverchecker.checking.query;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 public final class Queries {
-    public static Function<Element, Stream<? extends TypeElement>> findTypeElementsOfKind(ElementKind kind) {
+    public static Function<Element, Stream<? extends TypeElement>> findPublicTypesOfKind(ElementKind kind) {
         return el -> Stream.of(el)
-                .filter(e -> e.getKind().equals(kind))
+                .filter(e -> e.getModifiers().contains(Modifier.PUBLIC) && e.getKind().equals(kind))
                 .map(TypeElement.class::cast);
     }
 

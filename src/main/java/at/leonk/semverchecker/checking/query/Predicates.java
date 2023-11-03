@@ -1,4 +1,4 @@
-package at.leonk.semverchecker.checking;
+package at.leonk.semverchecker.checking.query;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.QualifiedNameable;

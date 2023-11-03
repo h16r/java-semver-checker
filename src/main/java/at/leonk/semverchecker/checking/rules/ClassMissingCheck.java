@@ -1,25 +1,24 @@
 package at.leonk.semverchecker.checking.rules;
 
 import at.leonk.semverchecker.checking.SemverCheck;
-import at.leonk.semverchecker.checking.TypePredicate;
 import at.leonk.semverchecker.checking.Violation;
+import at.leonk.semverchecker.checking.query.Predicates;
+import at.leonk.semverchecker.checking.query.Queries;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.ElementKind;
 import java.util.Collection;
 import java.util.stream.Stream;
 
 public class ClassMissingCheck implements SemverCheck {
     @Override
     public Stream<Violation> check(Collection<Element> baselineElements, Collection<Element> currentElements) {
-        return publicClasses(baselineElements)
-                .filter(baselineElement -> publicClasses(currentElements).noneMatch(currentElement -> currentElement.getQualifiedName().contentEquals(baselineElement.getQualifiedName())))
-                .map(missingElement -> Violation.Removed(missingElement.getQualifiedName().toString(), "class", missingElement.getQualifiedName().toString()));
+        return baselineElements.stream()
+                .flatMap(Queries.findPublicTypesOfKind(ElementKind.CLASS))
+                .filter(baselineElement -> currentElements.stream()
+                        .flatMap(Queries.findPublicTypesOfKind(ElementKind.CLASS))
+                        .noneMatch(Predicates.matchesQualifiedNameOf(baselineElement)))
+                .map(missingClass -> Violation.Removed(missingClass.getQualifiedName().toString(), "class", missingClass.getQualifiedName().toString()));
     }
 
-    private static Stream<TypeElement> publicClasses(Collection<Element> elements) {
-        return elements.stream()
-                .filter(TypePredicate.PUBLIC_CLASS)
-                .map(element -> (TypeElement) element);
-    }
 }
