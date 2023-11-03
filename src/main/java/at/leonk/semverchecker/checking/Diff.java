@@ -6,10 +6,6 @@ public record Diff(String sourcePath, String message, Type type, Criticality cri
         return new Diff(sourcePath, "%s \"%s\" removed".formatted(sourceType.toLowerCase(), sourceName), Type.REMOVED, Criticality.BREAKING);
     }
 
-    public static Diff Renamed(String sourcePath, java.lang.reflect.Type sourceType, String sourceName, String targetName) {
-        return null;
-    }
-
     enum Criticality {
         BREAKING,
         WARNING,

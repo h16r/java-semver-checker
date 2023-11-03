@@ -18,6 +18,7 @@ class CheckerTest {
     @MethodSource("getTestProjects")
     void testAllRules(Path baselineProject, Path currentProject) throws IOException {
         var report = Checker.check(baselineProject, currentProject);
+        System.out.println("report.differences() = " + report.differences());
         assertTrue(report.breaking());
     }
 
