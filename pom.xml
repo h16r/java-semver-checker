@@ -5,9 +5,10 @@
     <artifactId>parent</artifactId>
     <version>0.1.0</version>
 
+    <name>java-semver-checker</name>
+
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
-
         <junit-jupiter.version>5.10.0</junit-jupiter.version>
     </properties>
 
