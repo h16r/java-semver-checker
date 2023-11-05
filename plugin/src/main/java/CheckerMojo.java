@@ -6,21 +6,17 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @Mojo(name = "semver-checker-mojo", defaultPhase = LifecyclePhase.VALIDATE)
 public class CheckerMojo extends AbstractMojo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckerMojo.class);
-
-
 
     @Parameter(property = "baseline.path", required = true)
     String baselinePath;
@@ -37,6 +33,8 @@ public class CheckerMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+        //FIXME: add logging & tests to classes
 
         String currentPath = Optional.ofNullable(this.currentPath).orElseGet(() -> {
             LOGGER.warn("current.path not provided, using baseline.path; configure current.commit or current.branch for a different file resolver strategy");
