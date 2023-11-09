@@ -1,5 +1,7 @@
 import at.leonk.semverchecker.checking.Checker;
 import at.leonk.semverchecker.checking.Report;
+import at.leonk.semverchecker.source.FileSource;
+import at.leonk.semverchecker.source.FileSourcesHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -13,7 +15,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
-@Mojo(name = "semver-checker-mojo", defaultPhase = LifecyclePhase.VALIDATE)
+
+
+@Mojo(name = "check", defaultPhase = LifecyclePhase.VALIDATE)
 public class CheckerMojo extends AbstractMojo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckerMojo.class);
@@ -41,8 +45,12 @@ public class CheckerMojo extends AbstractMojo {
             return baselinePath;
         });
 
-        FileSource baseline = new FileSource(baselinePath, Optional.ofNullable(baselineCommit));
-        FileSource current = new FileSource(currentPath, Optional.ofNullable(currentCommit));
+        FileSource baseline = new FileSource(baselinePath, Optional.empty(), Optional.ofNullable(baselineCommit));
+        FileSource current = new FileSource(currentPath, Optional.empty(), Optional.ofNullable(currentCommit));
+
+        if (baseline.equals(current)) {
+            LOGGER.warn("File sources for baseline and current ");
+        }
 
         FileSourcesHandler filesHandler = new FileSourcesHandler(baseline, current);
 

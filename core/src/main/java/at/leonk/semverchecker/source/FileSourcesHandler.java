@@ -1,11 +1,13 @@
+package at.leonk.semverchecker.source;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 public class FileSourcesHandler {
 
-    private final String tmpPrefix = "/tmp";
-
+    private final String tmpPrefix = "/tmp/semver";
     private final FileSource baseline;
     private final FileSource current;
 
@@ -14,29 +16,28 @@ public class FileSourcesHandler {
         this.current = current;
     }
 
-    private Path copyAndCheckout(Path source, Path destination, String commitId) throws IOException {
-
-        GitRepository sourceRepo = new GitRepository(source);
+    private Path copyAndCheckout(GitRepository sourceRepo, Path sourcePath, Path destination, String commitId) throws IOException {
 
         GitRepository destinationRepo = sourceRepo
                 .copyTo(destination)
                 .checkout(commitId);
 
-        return destinationRepo.getRootDir().resolve(sourceRepo.getRootDir().relativize(source.toAbsolutePath()));
+        return destinationRepo.getRootDir().resolve(sourceRepo.getRootDir().relativize(sourcePath));
     }
 
     private Path resolve(FileSource source) {
 
-        Path sourcePath = Paths.get(source.getPath());
+        Path sourcePath = Paths.get(source.path());
 
-        if (source.getCommit().isEmpty()) {
+        if (source.commit().isEmpty()) {
             return sourcePath;
         }
 
-        Path tempPath = Paths.get(tmpPrefix, sourcePath.getFileName().toString());
+        Path tempPath = Paths.get(tmpPrefix, sourcePath.getFileName().toString(), source.commit().get());
 
         try {
-            return copyAndCheckout(Paths.get(source.getPath()), tempPath, source.getCommit().get());
+            GitRepository gitRepository = source.toGitRepository();
+            return copyAndCheckout(gitRepository, Paths.get(source.path()), tempPath, source.commit().get());
         } catch (IOException e) {
             e.printStackTrace();
         }
