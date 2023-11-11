@@ -5,14 +5,14 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>at.leonk.semver-checker</groupId>
-    <artifactId>parent</artifactId>
+    <groupId>at.haesslerkirschner.semverchecker</groupId>
+    <artifactId>java-semver-checker</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>plugin</module>
-        <module>core</module>
+        <module>semver-checker-maven-plugin</module>
+        <module>semver-checker-core</module>
     </modules>
 
 </project>
