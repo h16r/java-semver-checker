@@ -23,8 +23,7 @@ public class GitRepository {
     public GitRepository(Path source) throws IOException {
 
         this.repository = new FileRepositoryBuilder()
-                .setWorkTree(source.toFile())
-                .findGitDir()
+                .findGitDir(source.toFile())
                 .build();
     }
 

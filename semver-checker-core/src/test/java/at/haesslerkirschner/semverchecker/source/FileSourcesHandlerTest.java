@@ -17,15 +17,15 @@ class FileSourcesHandlerTest {
     @Test
     public void testResolving() throws IOException {
 
-        FileSource baseline = new FileSource("src/test/resources/test-projects/class-missing");
-        FileSource current = FileSource.viaGitDir("src/test/resources/git-projects/example/.git", Optional.of("27504898efe5d583f573c923d754d0bcae61d20c"));
+        FileSource baseline = new FileSource("src/test/resources/test-projects/class-missing/baseline");
+        FileSource current = new FileSource("src/test/resources/test-projects/class-missing/current");
 
         FileSourcesHandler underTest = new FileSourcesHandler(baseline, current);
 
-        Path expectedBaseline = Paths.get("src/test/resources/test-projects/class-missing");
+        Path expectedBaseline = Paths.get("src/test/resources/test-projects/class-missing/baseline");
         Path actualBaseline = underTest.resolveBaseline();
 
-        Path expectedCurrent = Paths.get("/tmp/semver/example/27504898efe5d583f573c923d754d0bcae61d20c");
+        Path expectedCurrent = Paths.get("src/test/resources/test-projects/class-missing/current");
         Path actualCurrent = underTest.resolveCurrent();
 
         assertEquals(expectedBaseline, actualBaseline);
@@ -33,13 +33,6 @@ class FileSourcesHandlerTest {
         assertEquals(expectedCurrent, actualCurrent);
         assertTrue(expectedCurrent.toFile().exists());
         assertTrue(expectedCurrent.toFile().isDirectory());
-
-        Files.walk(Paths.get("/tmp/semver"))
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
-
-        assertFalse(Files.exists(Paths.get("/tmp/semver")));
 
     }
 
