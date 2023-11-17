@@ -7,8 +7,12 @@
 
     <groupId>at.haesslerkirschner.semverchecker</groupId>
     <artifactId>java-semver-checker</artifactId>
-    <version>0.1.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
+
+    <properties>
+        <version>0.1.0</version>
+    </properties>
 
     <modules>
         <module>semver-checker-maven-plugin</module>

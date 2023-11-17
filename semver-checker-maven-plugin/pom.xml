@@ -11,7 +11,7 @@
     <parent>
         <groupId>at.haesslerkirschner.semverchecker</groupId>
         <artifactId>java-semver-checker</artifactId>
-        <version>0.1.0</version>
+        <version>${revision}</version>
     </parent>
 
     <properties>
