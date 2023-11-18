@@ -2,10 +2,12 @@ package at.haesslerkirschner.semverchecker;
 
 import at.haesslerkirschner.semverchecker.checking.Report;
 import at.haesslerkirschner.semverchecker.checking.Checker;
+import at.haesslerkirschner.semverchecker.source.FileSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -19,11 +21,15 @@ class CheckerTest {
     @ParameterizedTest(name = "{index} {2}")
     @MethodSource("getTestProjects")
     void testAllRules(Path baselineProject, Path currentProject, @SuppressWarnings("unused") String testDisplayName) throws IOException {
+
+        var baseline = new FileSource(baselineProject);
+        var current = new FileSource(currentProject);
+
         // No changes when checking against itself, so report should be non-breaking.
-        var nonBreakingReport = Checker.check(baselineProject, baselineProject);
+        var nonBreakingReport = Checker.check(baseline, baseline);
         assertNonBreaking(nonBreakingReport);
 
-        var report = Checker.check(baselineProject, currentProject);
+        var report = Checker.check(baseline, current);
         assertBreaking(report);
     }
 

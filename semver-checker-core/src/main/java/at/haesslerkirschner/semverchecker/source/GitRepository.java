@@ -14,7 +14,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-public class GitRepository {
+final class GitRepository {
 
     private final Repository repository;
 
@@ -31,11 +31,7 @@ public class GitRepository {
         this.repository = new FileRepositoryBuilder().setGitDir(gitDir).build();
     }
 
-    public static GitRepository viaGitDir(File gitDir) throws IOException {
-        return new GitRepository(gitDir);
-    }
-
-    public GitRepository copyTo(Path target) throws IOException {
+    GitRepository copyTo(Path target) throws IOException {
 
         Path gitRootDir = Paths.get(repository.getDirectory().getParent());
 
@@ -62,7 +58,7 @@ public class GitRepository {
         return new GitRepository(target.resolve(".git").toFile());
     }
 
-    public GitRepository checkout(String commitId) {
+    GitRepository checkout(String commitId) {
 
         try {
             Git.wrap(this.repository).checkout().setName(commitId).setForced(true).call();

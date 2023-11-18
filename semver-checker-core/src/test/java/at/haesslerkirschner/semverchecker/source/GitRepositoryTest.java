@@ -2,6 +2,7 @@ package at.haesslerkirschner.semverchecker.source;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -18,29 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GitRepositoryTest {
 
-    Path initGitRepository() throws GitAPIException {
 
-        Path gitRepository = FileOps.tmpDir().resolve("git").resolve(UUID.randomUUID().toString());
-
-        Git repository = Git.init().setDirectory(gitRepository.toFile()).call();
-
-        return gitRepository;
-    }
-
-    @BeforeAll
-    static void init() throws IOException {
-        if (Files.exists(Paths.get("/tmp/semver"))) {
-            Files.walk(Paths.get("/tmp/semver"))
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        }
+    @AfterEach
+    void init() throws IOException {
+       FileOps.deleteTmpDir();
     }
 
     @Test
     void loadGitRepositoryByGitDirectory() throws IOException, GitAPIException {
 
-        Path baseline = initGitRepository();
+        Path baseline = GitOps.initGitRepository();
         GitRepository underTest = new GitRepository(baseline);
 
         assertEquals(underTest.getRootDir(), underTest.getRootDir());
@@ -50,11 +38,11 @@ class GitRepositoryTest {
     @Test
     void copyGitDirectoryToTmp() throws IOException, GitAPIException {
 
-        Path targetPath = FileOps.tmpDir().resolve("example");
+        Path targetPath = FileOps.tmpDir("example");
 
-        Path gitDirectory = initGitRepository();
+        Path gitDirectory = GitOps.initGitRepository();
 
-        GitRepository underTest = GitRepository.viaGitDir(gitDirectory.toFile());
+        GitRepository underTest = new GitRepository(gitDirectory);
         GitRepository target = underTest.copyTo(targetPath);
 
         assertEquals(targetPath, target.getRootDir());

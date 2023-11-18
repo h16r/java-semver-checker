@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class PublicApiParser {
     private static final DocumentationTool documentationTool = ToolProvider.getSystemDocumentationTool();
