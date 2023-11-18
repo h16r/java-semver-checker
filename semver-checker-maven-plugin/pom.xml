@@ -55,7 +55,7 @@
         <dependency>
             <groupId>at.haesslerkirschner.semverchecker</groupId>
             <artifactId>semver-checker-core</artifactId>
-            <version>0.1.0</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
 
