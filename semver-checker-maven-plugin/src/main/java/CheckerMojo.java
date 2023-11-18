@@ -1,7 +1,6 @@
 import at.haesslerkirschner.semverchecker.checking.Checker;
 import at.haesslerkirschner.semverchecker.checking.Report;
 import at.haesslerkirschner.semverchecker.source.FileSource;
-import at.haesslerkirschner.semverchecker.source.FileSourcesHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -12,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 
@@ -44,25 +43,20 @@ public class CheckerMojo extends AbstractMojo {
             return baselinePath;
         });
 
-        FileSource baseline = new FileSource(baselinePath, Optional.empty(), Optional.ofNullable(baselineCommit));
-        FileSource current = new FileSource(currentPath, Optional.empty(), Optional.ofNullable(currentCommit));
+        FileSource baseline = new FileSource(Paths.get(baselinePath), baselineCommit);
+        FileSource current = new FileSource(Paths.get(currentPath), currentCommit);
 
         if (baseline.equals(current)) {
             LOGGER.warn("File sources for baseline and current ");
         }
 
-        FileSourcesHandler filesHandler = new FileSourcesHandler(baseline, current);
-
         try {
 
-            Path resolvedBaseline = filesHandler.resolveBaseline();
-            Path resolvedCurrent = filesHandler.resolveCurrent();
-
             LOGGER.info("Checking: ");
-            LOGGER.info(" - " + resolvedBaseline.toString());
-            LOGGER.info(" - " + resolvedCurrent.toString());
+            LOGGER.info(" - " + baseline);
+            LOGGER.info(" - " + current);
 
-            Report report = Checker.check(resolvedBaseline, resolvedCurrent);
+            Report report = Checker.check(baseline, current);
 
             if (!report.breaking()) {
                 return;

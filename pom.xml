@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <version>0.1.0</version>
+        <revision>0.1.0</revision>
     </properties>
 
     <modules>
