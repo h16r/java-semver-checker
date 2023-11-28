@@ -24,6 +24,6 @@ public class GitOps {
 
         FileOps.copyDir(sources, gitRepository);
 
-        return Git.init().setDirectory(gitRepository.toFile()).call();
+        return Git.init().setInitialBranch("main").setDirectory(gitRepository.toFile()).call();
     }
 }

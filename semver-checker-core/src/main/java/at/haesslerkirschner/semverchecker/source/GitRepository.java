@@ -58,12 +58,12 @@ final class GitRepository {
         return new GitRepository(target.resolve(".git").toFile());
     }
 
-    GitRepository checkout(String commitId) {
+    GitRepository checkout(String ref) {
 
         try {
-            Git.wrap(this.repository).checkout().setName(commitId).setForced(true).call();
+            Git.wrap(this.repository).checkout().setName(ref).call();
         } catch (GitAPIException e) {
-            LOGGER.severe(() -> "Couldn't checkout commit '%s'; Error: %s".formatted(commitId, e.getMessage()));
+            LOGGER.severe(() -> "Couldn't checkout ref '%s'; Error: %s".formatted(ref, e.getMessage()));
             throw new IllegalStateException(e);
         }
 

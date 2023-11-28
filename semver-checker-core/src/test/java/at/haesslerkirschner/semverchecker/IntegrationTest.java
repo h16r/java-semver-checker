@@ -38,7 +38,36 @@ public class IntegrationTest {
         String removalCommit = repository.commit().setMessage("remove public class").call().getName();
 
         FileSource baseline = new FileSource(Paths.get("src/test/resources/test-projects/class-missing/baseline"));
-        FileSource current = new FileSource(target, removalCommit);
+        FileSource current = new FileSource(target, removalCommit, null);
+
+        Report report = Checker.check(baseline, current);
+        assertTrue(report.breaking());
+    }
+
+    @Test
+    void publicInterfaceRemovedOnFeatureBranch() throws GitAPIException, IOException {
+
+        Path source = Paths.get("src/test/resources/test-projects/class-missing/baseline");
+
+        Git repository = GitOps.initGitRepositoryWithFiles(source);
+        Path target = repository.getRepository().getDirectory().toPath().getParent();
+
+        String featureBranch = "feature";
+
+        repository.add().addFilepattern(".").call();
+        repository.commit().setMessage("initial commit").call();
+
+        repository.checkout().setName(featureBranch).setCreateBranch(true).call();
+
+        Files.deleteIfExists(target.resolve("SomeClass.java"));
+
+        repository.add().addFilepattern(".").call();
+        repository.commit().setMessage("remove public class").call();
+
+        repository.checkout().setName("main").call();
+
+        FileSource baseline = new FileSource(source);
+        FileSource current = new FileSource(target, null, "feature");
 
         Report report = Checker.check(baseline, current);
         assertTrue(report.breaking());

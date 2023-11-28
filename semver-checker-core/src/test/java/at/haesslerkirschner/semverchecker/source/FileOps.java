@@ -36,7 +36,7 @@ public class FileOps {
     public static void deleteTmpDir() {
         try {
             if (Files.exists(tmpDir)) {
-                Files.walk(tmpDir)
+                Files.walk(tmpDir.getParent())
                         .sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
                         .forEach(File::delete);
