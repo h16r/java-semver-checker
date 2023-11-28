@@ -31,7 +31,7 @@ class FileSourcesTest {
         FileSource underTest = new FileSource(Paths.get("src/test/resources/test-projects/class-missing/baseline"));
 
         Path expectedTarget = Paths.get("src/test/resources/test-projects/class-missing/baseline");
-        Path actualTarget = underTest.resolve();
+        Path actualTarget = underTest.resolve().path();
 
         assertEquals(expectedTarget, actualTarget);
         assertEquals(expectedTarget, actualTarget);
@@ -51,7 +51,7 @@ class FileSourcesTest {
 
         FileSource underTest = new FileSource(repositoryPath, commit.getName(), null);
 
-        Path actualTarget = underTest.resolve();
+        Path actualTarget = underTest.resolve().path();
         Path expectedTarget = Paths.get(FileSource.TMP_DIR,"baseline",commit.getName());
 
         assertEquals(expectedTarget, actualTarget);

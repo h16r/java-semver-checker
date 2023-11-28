@@ -9,9 +9,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class FileSource {
 
+    private static final Logger LOGGER = Logger.getLogger(FileSource.class.getSimpleName());
     public static final String TMP_DIR = "/tmp/semver";
 
     private final Path path;
@@ -41,10 +43,10 @@ public class FileSource {
         return destinationRepo.getRootDir().resolve(sourceRepo.getRootDir().relativize(sourcePath));
     }
 
-    public Path resolve() {
+    public ResolvedFileSource resolve() {
 
         if (commit == null && branch == null) {
-            return path;
+            return new ResolvedFileSource(path, true);
         }
 
         String sourceFolder = path.getFileName().toString();
@@ -55,9 +57,10 @@ public class FileSource {
 
         Path tempPath = Paths.get(TMP_DIR, sourceFolder, Optional.ofNullable(commit).orElse(""), Optional.ofNullable(branch).orElse(""));
 
+
         try {
             GitRepository gitRepository = toGitRepository();
-            return copyAndCheckout(gitRepository, path, tempPath, commit, branch);
+            return new ResolvedFileSource(copyAndCheckout(gitRepository, path, tempPath, commit, branch), false);
         } catch (IOException e) {
             throw new IllegalStateException("Couldn't checkout git repository " + e.getMessage());
         }

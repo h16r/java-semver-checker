@@ -18,22 +18,24 @@ public class Checker {
 
     public static Report check(FileSource baselineApiPath, FileSource currentApiPath) throws IOException {
 
-        var baseline = baselineApiPath.resolve();
-        var current = currentApiPath.resolve();
+        try (var baseline = baselineApiPath.resolve();
+             var current = currentApiPath.resolve()) {
 
-        LOGGER.info(() -> "Checking baseline: '%s' against current '%s'".formatted(baseline, current));
+            LOGGER.info(() -> "Checking baseline: '%s' against current '%s'".formatted(baseline, current));
 
-        var publicApi = PublicApiParser.parse(baseline, current);
+            var publicApi = PublicApiParser.parse(baseline.path(), current.path());
 
-        var allChecks = Stream.of(
-                new ClassMissingCheck(),
-                new RecordMissingCheck(),
-                new EnumValueAddedCheck(),
-                new EnumMissingCheck()
-        );
+            var allChecks = Stream.of(
+                    new ClassMissingCheck(),
+                    new RecordMissingCheck(),
+                    new EnumValueAddedCheck(),
+                    new EnumMissingCheck()
+            );
 
-        return new Report(allChecks
-                .flatMap(checker -> checker.checkForViolations(publicApi.baselineElements(), publicApi.currentElements()).stream())
-                .toList());
+
+            return new Report(allChecks
+                    .flatMap(checker -> checker.checkForViolations(publicApi.baselineElements(), publicApi.currentElements()).stream())
+                    .toList());
+        }
     }
 }

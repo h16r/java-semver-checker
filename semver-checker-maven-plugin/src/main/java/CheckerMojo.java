@@ -34,7 +34,6 @@ public class CheckerMojo extends AbstractMojo {
     @Parameter(property = "current.branch")
     String currentBranch;
 
-
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
