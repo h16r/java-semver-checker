@@ -3,3 +3,5 @@ target
 *.iml
 .DS_STORE
 **/.DS_STORE
+.flattened-pom.xml
+**/.flattened-pom.xml
