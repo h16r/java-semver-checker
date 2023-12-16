@@ -18,34 +18,30 @@ public class FileSource {
 
     private final Path path;
 
-    private String commit;
-
-    private String branch;
+    private String ref;
 
     public FileSource(Path path) {
         this.path = path;
     }
 
-    public FileSource(Path path, String commit, String branch) {
+    public FileSource(Path path, String ref) {
         this.path = path;
-        this.commit = commit;
-        this.branch = branch;
+        this.ref = ref;
     }
 
-    private Path copyAndCheckout(GitRepository sourceRepo, Path sourcePath, Path destination, String commitId, String branch) throws IOException {
+    private Path copyAndCheckout(GitRepository sourceRepo, Path sourcePath, Path destination, String ref) throws IOException {
 
         GitRepository destinationRepo = sourceRepo
                 .copyTo(destination);
 
-        Optional.ofNullable(branch).map(destinationRepo::checkout);
-        Optional.ofNullable(commitId).map(destinationRepo::checkout);
+        Optional.ofNullable(ref).map(destinationRepo::checkout);
 
         return destinationRepo.getRootDir().resolve(sourceRepo.getRootDir().relativize(sourcePath));
     }
 
     public ResolvedFileSource resolve() {
 
-        if (commit == null && branch == null) {
+        if (ref == null) {
             return new ResolvedFileSource(path, true);
         }
 
@@ -55,12 +51,12 @@ public class FileSource {
             sourceFolder = FileSystems.getDefault().getPath("").toAbsolutePath().getFileName().toString();
         }
 
-        Path tempPath = Paths.get(TMP_DIR, sourceFolder, Optional.ofNullable(commit).orElse(""), Optional.ofNullable(branch).orElse(""));
+        Path tempPath = Paths.get(TMP_DIR, sourceFolder, Optional.ofNullable(ref).orElse(""));
 
 
         try {
             GitRepository gitRepository = toGitRepository();
-            return new ResolvedFileSource(copyAndCheckout(gitRepository, path, tempPath, commit, branch), false);
+            return new ResolvedFileSource(copyAndCheckout(gitRepository, path, tempPath, ref), false);
         } catch (IOException e) {
             throw new IllegalStateException("Couldn't checkout git repository " + e.getMessage());
         }

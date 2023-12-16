@@ -49,7 +49,7 @@ class FileSourcesTest {
 
         Path repositoryPath = repository.getRepository().getDirectory().toPath().getParent();
 
-        FileSource underTest = new FileSource(repositoryPath, commit.getName(), null);
+        FileSource underTest = new FileSource(repositoryPath, commit.getName());
 
         Path actualTarget = underTest.resolve().path();
         Path expectedTarget = Paths.get(FileSource.TMP_DIR,"baseline",commit.getName());

@@ -6,6 +6,9 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Comparator;
 
+/**
+ * Methods to prepare testable repositories
+ */
 public class FileOps {
 
     private static final Path tmpDir = Paths.get(FileSource.TMP_DIR, "tests");

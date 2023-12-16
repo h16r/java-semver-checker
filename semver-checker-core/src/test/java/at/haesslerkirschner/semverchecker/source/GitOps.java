@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.UUID;
 
+/**
+ * Methods to prepare testable git repositories
+ */
 public class GitOps {
 
     public static Path initGitRepository() throws GitAPIException {

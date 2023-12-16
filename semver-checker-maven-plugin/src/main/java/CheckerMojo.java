@@ -1,3 +1,5 @@
+import at.haesslerkirschner.semverchecker.Bump;
+import at.haesslerkirschner.semverchecker.Configuration;
 import at.haesslerkirschner.semverchecker.checking.Checker;
 import at.haesslerkirschner.semverchecker.checking.Report;
 import at.haesslerkirschner.semverchecker.source.FileSource;
@@ -19,20 +21,17 @@ public class CheckerMojo extends AbstractMojo {
     @Parameter(property = "baseline.path")
     String baselinePath;
 
-    @Parameter(property = "baseline.commit")
-    String baselineCommit;
-
-    @Parameter(property = "baseline.branch")
-    String baselineBranch;
+    @Parameter(property = "baseline.ref")
+    String baselineRef;
 
     @Parameter(property = "current.path")
     String currentPath;
 
-    @Parameter(property = "current.commit")
-    String currentCommit;
+    @Parameter(property = "current.ref")
+    String currentRef;
 
-    @Parameter(property = "current.branch")
-    String currentBranch;
+    @Parameter(property = "bump")
+    String bump;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -47,8 +46,8 @@ public class CheckerMojo extends AbstractMojo {
             return baselinePath;
         });
 
-        FileSource baseline = new FileSource(Paths.get(baselinePath), baselineCommit, baselineBranch);
-        FileSource current = new FileSource(Paths.get(currentPath), currentCommit, currentBranch);
+        FileSource baseline = new FileSource(Paths.get(baselinePath), baselineRef);
+        FileSource current = new FileSource(Paths.get(currentPath), currentRef);
 
         if (baseline.equals(current)) {
             getLog().warn("File sources for baseline and current ");
@@ -61,7 +60,7 @@ public class CheckerMojo extends AbstractMojo {
             getLog().info(" against ");
             getLog().info(" current (new): " + current);
 
-            Report report = Checker.check(baseline, current);
+            Report report = Checker.check(new Configuration(baseline, current, Bump.valueOf(bump.toUpperCase())));
 
             if (!report.breaking()) {
                 return;

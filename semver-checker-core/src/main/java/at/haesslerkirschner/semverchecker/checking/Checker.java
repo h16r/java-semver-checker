@@ -1,5 +1,6 @@
 package at.haesslerkirschner.semverchecker.checking;
 
+import at.haesslerkirschner.semverchecker.Configuration;
 import at.haesslerkirschner.semverchecker.checking.rules.ClassMissingCheck;
 import at.haesslerkirschner.semverchecker.checking.rules.EnumMissingCheck;
 import at.haesslerkirschner.semverchecker.checking.rules.EnumValueAddedCheck;
@@ -8,7 +9,6 @@ import at.haesslerkirschner.semverchecker.parsing.PublicApiParser;
 import at.haesslerkirschner.semverchecker.source.FileSource;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -16,12 +16,12 @@ public class Checker {
 
     private static final Logger LOGGER = Logger.getLogger(PublicApiParser.class.getSimpleName());
 
-    public static Report check(FileSource baselineApiPath, FileSource currentApiPath) throws IOException {
+    public static Report check(Configuration configuration) throws IOException {
 
-        try (var baseline = baselineApiPath.resolve();
-             var current = currentApiPath.resolve()) {
+        try (var baseline = configuration.baseline().resolve();
+             var current = configuration.current().resolve()) {
 
-            LOGGER.info(() -> "Checking baseline: '%s' against current '%s'".formatted(baseline, current));
+            LOGGER.info(() -> "Checking baseline: '%s' against current '%s'".formatted(baseline.path(), current.path()));
 
             var publicApi = PublicApiParser.parse(baseline.path(), current.path());
 
@@ -34,7 +34,7 @@ public class Checker {
 
 
             return new Report(allChecks
-                    .flatMap(checker -> checker.checkForViolations(publicApi.baselineElements(), publicApi.currentElements()).stream())
+                    .flatMap(checker -> checker.checkForViolations(publicApi.baselineElements(), publicApi.currentElements(), configuration.bump()).stream())
                     .toList());
         }
     }

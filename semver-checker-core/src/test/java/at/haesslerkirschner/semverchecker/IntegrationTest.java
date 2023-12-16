@@ -38,9 +38,9 @@ public class IntegrationTest {
         String removalCommit = repository.commit().setMessage("remove public class").call().getName();
 
         FileSource baseline = new FileSource(Paths.get("src/test/resources/test-projects/class-missing/baseline"));
-        FileSource current = new FileSource(target, removalCommit, null);
+        FileSource current = new FileSource(target, removalCommit);
 
-        Report report = Checker.check(baseline, current);
+        Report report = Checker.check(new Configuration(baseline, current, Bump.PATCH));
         assertTrue(report.breaking());
     }
 
@@ -67,9 +67,9 @@ public class IntegrationTest {
         repository.checkout().setName("main").call();
 
         FileSource baseline = new FileSource(source);
-        FileSource current = new FileSource(target, null, "feature");
+        FileSource current = new FileSource(target, "feature");
 
-        Report report = Checker.check(baseline, current);
+        Report report = Checker.check(new Configuration(baseline, current, Bump.PATCH));
         assertTrue(report.breaking());
     }
 }

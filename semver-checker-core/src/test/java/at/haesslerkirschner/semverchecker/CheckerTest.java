@@ -26,10 +26,10 @@ class CheckerTest {
         var current = new FileSource(currentProject);
 
         // No changes when checking against itself, so report should be non-breaking.
-        var nonBreakingReport = Checker.check(baseline, baseline);
+        var nonBreakingReport = Checker.check(new Configuration(baseline, baseline, Bump.PATCH));
         assertNonBreaking(nonBreakingReport);
 
-        var report = Checker.check(baseline, current);
+        var report = Checker.check(new Configuration(baseline, current, Bump.PATCH));
         assertBreaking(report);
     }
 
