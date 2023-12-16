@@ -1,12 +1,9 @@
 package at.haesslerkirschner.semverchecker.checking;
 
 import at.haesslerkirschner.semverchecker.Configuration;
-import at.haesslerkirschner.semverchecker.checking.rules.ClassMissingCheck;
-import at.haesslerkirschner.semverchecker.checking.rules.EnumMissingCheck;
 import at.haesslerkirschner.semverchecker.checking.rules.EnumValueAddedCheck;
-import at.haesslerkirschner.semverchecker.checking.rules.RecordMissingCheck;
+import at.haesslerkirschner.semverchecker.checking.rules.PublicTypeMissingCheck;
 import at.haesslerkirschner.semverchecker.parsing.PublicApiParser;
-import at.haesslerkirschner.semverchecker.source.FileSource;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -25,12 +22,10 @@ public class Checker {
 
             var publicApi = PublicApiParser.parse(baseline.path(), current.path());
 
-            var allChecks = Stream.of(
-                    new ClassMissingCheck(),
-                    new RecordMissingCheck(),
-                    new EnumValueAddedCheck(),
-                    new EnumMissingCheck()
-            );
+        var allChecks = Stream.of(
+                new PublicTypeMissingCheck(),
+                new EnumValueAddedCheck()
+        );
 
 
             return new Report(allChecks
