@@ -42,25 +42,22 @@ public class CheckerMojo extends AbstractMojo {
         });
 
         String currentPath = Optional.ofNullable(this.currentPath).orElseGet(() -> {
-            getLog().warn("current.path not provided, using baseline.path; configure current.commit or current.branch for a different file resolver strategy");
+            getLog().warn("current.path not provided, using baseline.path; configure current.ref for a different file resolver strategy");
             return baselinePath;
         });
 
         FileSource baseline = new FileSource(Paths.get(baselinePath), baselineRef);
         FileSource current = new FileSource(Paths.get(currentPath), currentRef);
 
-        if (baseline.equals(current)) {
-            getLog().warn("File sources for baseline and current ");
-        }
-
         try {
 
-            getLog().info("Checking semver violations: ");
-            getLog().info(" baseline (old): " + baseline);
-            getLog().info(" against ");
-            getLog().info(" current (new): " + current);
+            Bump versionBump = Optional
+                    .ofNullable(bump)
+                    .map(String::toUpperCase)
+                    .map(Bump::valueOf)
+                    .orElse(Bump.PATCH);
 
-            Report report = Checker.check(new Configuration(baseline, current, Bump.valueOf(bump.toUpperCase())));
+            Report report = Checker.check(new Configuration(baseline, current, versionBump));
 
             if (!report.breaking()) {
                 return;
@@ -75,7 +72,10 @@ public class CheckerMojo extends AbstractMojo {
 
             report.differences().forEach(violation -> {
                 getLog().error("");
-                getLog().error("Rule %s (%s); %d violations".formatted(violation.code(), violation.description(), violation.locations().size()));
+                getLog().error("Rule %s (%s): %d violations".formatted(violation.code(), violation.description(), violation.locations().size()));
+                getLog().error("For more info see: %s".formatted(violation.docUrl()));
+                getLog().error("");
+                getLog().error("Locations: ");
                 violation.locations().stream().map(l -> "- " + l.fullyQualifiedName()).forEach(getLog()::error);
             });
 
