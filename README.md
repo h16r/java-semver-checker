@@ -5,6 +5,83 @@ Check your library for [Semver](https://semver.org/) violations before releasing
 Heavily inspired by Rust's [cargo-semver-checks](https://github.com/obi1kenobi/cargo-semver-checks) and
 the [cargo book](https://doc.rust-lang.org/cargo/reference/semver.html#item-remove).
 
+* [Usage](#usage)
+* [Quick Start](#quick-start)
+* [Rules](#rules)
+
+## Usage
+
+The semver-checker identifies breaking changes based on git-based differences in java sourcecode files. 
+
+Currently the following operation modes are supported:
+
+* maven-plugin (as part of the build process)
+* maven-plugin (CLI-based)
+
+## Quick Start
+
+> An example with a more detailed explanation can be found [here](https://github.com/trpouh/jsc-example)
+
+Clone the repository and install it via maven
+
+```shell
+git clone https://github.com/trpouh/java-semver-checker.git
+cd java-semver-checker
+mvn install
+```
+
+Find breaking changes in your sourcecode:
+
+```shell
+# refs can be commits, tags or branches
+mvn semver-checker:check -Dbaseline.ref=<old> -Dcurrent.ref=<new>
+
+# check against the main branch 
+mvn semver-checker:check -Dbaseline.ref=main
+
+# check two commits 
+mvn semver-checker:check -Dbaseline.ref=204f884 -Dcurrent.ref=10d058a
+
+# check commit against tag
+mvn semver-checker:check -Dbaseline.ref=v4.0.0 -Dcurrent.ref=10d058a
+
+# only check a specific package
+mvn semver-checker:check \
+  -Dbaseline.path=src/main/java/public \
+  -Dbaseline.ref=main
+```
+
+To include the semver-check directly into your build process, simply add it to the  `build` tag in the `pom.xml`:
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>at.haesslerkirschner.semverchecker</groupId>
+            <artifactId>semver-checker-maven-plugin</artifactId>
+            <version>0.1.0</version>
+            <configuration>
+                <!-- optional, defaults to: . -->
+                <baselinePath>.</baselinePath>
+                <baselineBranch>main</baselineBranch>
+                <!-- optional, defaults to: . (or, if provided, baselinePath) -->
+                <currentPath>.</currentPath>
+                <currentRef>feature</currentRef>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>check-semver</id>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                    <phase>verify</phase>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
 ## Rules
 
 As the goal of Semver is to indicate compatibility between library version changes, we can perform an automated check
@@ -119,11 +196,3 @@ public class Downstream {
     }
 }
 ```
-
-## Checker Implementation
-
-1. Parse public APIs of previous and current library release
-2. Check rules on diff according to desired semver increment
-3. If violations are found, display them to library author
-
-Todo: Replace List with Map; Signature as identifier
