@@ -2,6 +2,7 @@ package at.haesslerkirschner.semverchecker.checking;
 
 import at.haesslerkirschner.semverchecker.Configuration;
 import at.haesslerkirschner.semverchecker.checking.rules.EnumValueAddedCheck;
+import at.haesslerkirschner.semverchecker.checking.rules.PublicMethodSignatureChangedCheck;
 import at.haesslerkirschner.semverchecker.checking.rules.PublicTypeMissingCheck;
 import at.haesslerkirschner.semverchecker.parsing.PublicApiParser;
 
@@ -22,10 +23,11 @@ public class Checker {
 
             var publicApi = PublicApiParser.parse(baseline.path(), current.path());
 
-        var allChecks = Stream.of(
-                new PublicTypeMissingCheck(),
-                new EnumValueAddedCheck()
-        );
+            var allChecks = Stream.of(
+                    new PublicTypeMissingCheck(),
+                    new PublicMethodSignatureChangedCheck(),
+                    new EnumValueAddedCheck()
+            );
 
 
             return new Report(allChecks

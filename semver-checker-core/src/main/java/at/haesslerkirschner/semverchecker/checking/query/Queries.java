@@ -27,7 +27,7 @@ public final class Queries {
                 .stream();
     }
 
-    public static Function<Element, Stream<? extends TypeElement>> findPublicTypes() {
+    public static Function<Element, Stream<TypeElement>> findPublicTypes() {
         return el -> Stream.of(el)
                 .filter(e -> e.getModifiers().contains(Modifier.PUBLIC) && el.getKind().isDeclaredType())
                 .map(TypeElement.class::cast);
